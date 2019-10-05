@@ -1,2 +1,5 @@
 github.com/google/go-cmp v0.3.1 h1:Xye71clBPdm5HgqGwUkwhbynsUJZhDbS20FvLhQ2izg=
 github.com/google/go-cmp v0.3.1/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMywk6iLU=
+github.com/kdnakt/go-snippets v0.0.0-20191003231334-92fc9975d3da h1:KZ3Bzw2WMVC2RTVHDyYBdylN3f+miHVgEcJbxCBFyDA=
+github.com/kdnakt/go-snippets v0.0.0-20191003232143-c6ae7e1083d5 h1:1wxyLH5dlQBhtwzyk0CgGszvZKJmveVIWYP5USx/5SY=
+github.com/kdnakt/go-snippets v0.0.0-20191003232143-c6ae7e1083d5/go.mod h1:jLr7DNEl4MhZ2bGnDMFvzzxC0qJux7wBvK3Juqoemq4=
