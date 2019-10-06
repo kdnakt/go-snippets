@@ -1,0 +1,3 @@
+Hello from `println()`
+2019/10/07 08:12:13 Hello from `log.Println`
+2019/10/07 08:12:13 Hello from `log.Fatalf()`
