@@ -25,4 +25,12 @@ func main() {
 	}
 
 	log.Println(users)
+
+	target := "foobar"
+	for _, user := range users {
+		if user.ID == target {
+			log.Println(user)
+		}
+	}
+
 }
