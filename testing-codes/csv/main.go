@@ -3,6 +3,7 @@ package main
 import (
 	"io/ioutil"
 	"log"
+	"strings"
 
 	"github.com/jszwec/csvutil"
 )
@@ -33,4 +34,33 @@ func main() {
 		}
 	}
 
+	for i, user := range users {
+		if strings.HasPrefix(user.ID, "bar") {
+			users = delete(users, i)
+		}
+	}
+	log.Println(users)
+
+	newUser := User{
+		ID:   "buz",
+		Name: "no name",
+	}
+	users = append(users, newUser)
+	log.Println(users)
+
+	data, merr := csvutil.Marshal(users)
+	if merr != nil {
+		log.Fatal(merr)
+	}
+	werr := ioutil.WriteFile("out.csv", data, 0644)
+	if werr != nil {
+		log.Fatal(werr)
+	}
+}
+
+func delete(users []User, i int) []User {
+	users = append(users[:i], users[i+1:]...)
+	res := make([]User, len(users))
+	copy(res, users)
+	return res
 }
