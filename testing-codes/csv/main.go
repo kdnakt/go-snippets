@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"strings"
@@ -12,6 +13,27 @@ import (
 type User struct {
 	ID   string `csv:"id"`
 	Name string `csv:"name"`
+}
+
+// Get User from CSV
+func GetUser(csvPath, userID string) (User, error) {
+	file, err := ioutil.ReadFile(csvPath)
+	if err != nil {
+		return User{}, err
+	}
+	var users []User
+	csverr := csvutil.Unmarshal(file, &users)
+	if csverr != nil {
+		return User{}, csverr
+	}
+
+	for _, user := range users {
+		if user.ID == userID {
+			return user, nil
+		}
+	}
+
+	return User{}, fmt.Errorf("No such user with ID: %s", userID)
 }
 
 func main() {
