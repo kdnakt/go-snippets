@@ -13,6 +13,7 @@ func TestGetUser(t *testing.T) {
 		csvPath string
 		userID  string
 		want    csv.User
+		wantErr bool
 	}{
 		{
 			name:    "user3 exists",
@@ -22,13 +23,20 @@ func TestGetUser(t *testing.T) {
 				ID:   "user3",
 				Name: "User-3",
 			},
+			wantErr: false,
+		},
+		{
+			name:    "foo doesn't exist",
+			csvPath: "./testdata/nosuchfile.golden",
+			want:    csv.User{},
+			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			got, err := csv.GetUser(tt.csvPath, tt.userID)
-			if err != nil {
+			if err != nil && !tt.wantErr {
 				t.Fatal(err)
 			}
 			if !reflect.DeepEqual(tt.want, got) {
