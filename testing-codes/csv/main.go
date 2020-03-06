@@ -36,6 +36,36 @@ func GetUser(csvPath, userID string) (User, error) {
 	return User{}, fmt.Errorf("No such user with ID: %s", userID)
 }
 
+// Add User to CSV
+func AddUser(csvPath string, target User) error {
+	file, err := ioutil.ReadFile(csvPath)
+	if err != nil {
+		return err
+	}
+	var users []User
+	csverr := csvutil.Unmarshal(file, &users)
+	if csverr != nil {
+		return csverr
+	}
+
+	for _, user := range users {
+		if user.ID == target.ID {
+			return fmt.Errorf("User `%s` already exists", target.ID)
+		}
+	}
+	users = append(users, target)
+
+	data, merr := csvutil.Marshal(users)
+	if merr != nil {
+		return merr
+	}
+	werr := ioutil.WriteFile(csvPath, data, 0644)
+	if werr != nil {
+		return werr
+	}
+	return nil
+}
+
 func main() {
 	file, err := ioutil.ReadFile("user.csv")
 	if err != nil {
