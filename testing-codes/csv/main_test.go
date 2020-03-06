@@ -26,8 +26,16 @@ func TestGetUser(t *testing.T) {
 			wantErr: false,
 		},
 		{
+			name:    "no such file",
+			csvPath: "./testdata/test.golden",
+			userID:  "",
+			want:    csv.User{},
+			wantErr: true,
+		},
+		{
 			name:    "foo doesn't exist",
 			csvPath: "./testdata/nosuchfile.golden",
+			userID:  "foo",
 			want:    csv.User{},
 			wantErr: true,
 		},
