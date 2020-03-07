@@ -66,6 +66,40 @@ func AddUser(csvPath string, target User) error {
 	return nil
 }
 
+// Delete User from CSV
+func DeleteUser(csvPath, userID string) error {
+	file, err := ioutil.ReadFile(csvPath)
+	if err != nil {
+		return err
+	}
+	var users []User
+	csverr := csvutil.Unmarshal(file, &users)
+	if csverr != nil {
+		return csverr
+	}
+
+	found := false
+	for i, user := range users {
+		if user.ID == userID {
+			found = true
+			users = delete(users, i)
+		}
+	}
+	if !found {
+		return fmt.Errorf("User `%s` not found", userID)
+	}
+
+	data, merr := csvutil.Marshal(users)
+	if merr != nil {
+		return merr
+	}
+	werr := ioutil.WriteFile(csvPath, data, 0644)
+	if werr != nil {
+		return werr
+	}
+	return nil
+}
+
 func main() {
 	file, err := ioutil.ReadFile("user.csv")
 	if err != nil {

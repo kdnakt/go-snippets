@@ -2,6 +2,7 @@ package main_test
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/google/uuid"
@@ -55,7 +56,7 @@ func TestGetUser(t *testing.T) {
 	}
 }
 
-func TestAddUser(t *testing.T) {
+func TestAddAndDeleteUser(t *testing.T) {
 	newId, err := uuid.NewRandom()
 	if err != nil {
 		t.Fatal(err)
@@ -69,5 +70,26 @@ func TestAddUser(t *testing.T) {
 	adderr := csv.AddUser(csvPath, user)
 	if adderr != nil {
 		t.Fatal(adderr)
+	}
+
+	res, geterr1 := csv.GetUser(csvPath, user.ID)
+	if geterr1 != nil {
+		t.Fatal(geterr1)
+	}
+	if !reflect.DeepEqual(res, user) {
+		t.Fatalf("want %v, got %v", user, res)
+	}
+
+	delerr := csv.DeleteUser(csvPath, user.ID)
+	if delerr != nil {
+		t.Fatal(delerr)
+	}
+
+	_, geterr2 := csv.GetUser(csvPath, user.ID)
+	if geterr2 == nil {
+		t.Fatalf("User should not be found: %v", res)
+	}
+	if !strings.HasPrefix(geterr2.Error(), "No such user with ID: ") {
+		t.Fatalf("Wrong error: %v", geterr2)
 	}
 }
