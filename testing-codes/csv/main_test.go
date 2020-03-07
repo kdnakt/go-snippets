@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/google/uuid"
 	csv "github.com/kdnakt/go-snippets/testing-codes/csv"
 )
 
@@ -51,5 +52,22 @@ func TestGetUser(t *testing.T) {
 				t.Errorf("GetUser(%s, %s) = %v, want %v", tt.csvPath, tt.userID, got, tt.want)
 			}
 		})
+	}
+}
+
+func TestAddUser(t *testing.T) {
+	newId, err := uuid.NewRandom()
+	if err != nil {
+		t.Fatal(err)
+	}
+	csvPath := "./testdata/test.golden"
+	user := csv.User{
+		ID:   newId.String(),
+		Name: "New User",
+	}
+
+	adderr := csv.AddUser(csvPath, user)
+	if adderr != nil {
+		t.Fatal(adderr)
 	}
 }
